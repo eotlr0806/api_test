@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+
+<label for="upload_key">다트 API Key 등록</label>
+<input type="text" id="upload_key">
+<input type="button" value="등록" onclick="post(UPLOAD_KEY)">
+
+</body>
+</html>
+
+
+<script>
+  const URI_UPLOAD_KEY = 'http://localhost:8080/upload/key'
+  const UPLOAD_KEY = 'uploadKey';
+  const SUCCESS = 2000;
+
+  let post = (action) => {
+    if (action === UPLOAD_KEY){
+        postUploadApi();
+    }
+  }
+
+  let postUploadApi = () => {
+    let key = $('#upload_key').val();
+      axios.post(URI_UPLOAD_KEY, {
+          key: key
+      })
+          .then(function (response) {
+              if (isSuccess(response)){
+                  alert('등록 완료');
+              }else{
+                  alert('등록 실패')
+              }
+              console.log(response);
+          })
+          .catch(function (error) {
+              alert('등록 실패');
+              console.log(error);
+          });
+  }
+
+  let isSuccess = response => {
+      return !!(response || response.data || response.data.code || response.data.code === SUCCESS);
+  }
+
+</script>
