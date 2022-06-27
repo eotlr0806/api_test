@@ -11,7 +11,8 @@
 
 <label for="upload_key">다트 API Key 등록</label>
 <input type="text" id="upload_key">
-<input type="button" value="등록" onclick="post(UPLOAD_KEY)">
+<input type="button" value="등록" onclick="post(UPLOAD_KEY_API)">
+<input type="button" value="조회" onclick="get(GET_STOCK_INFO_API)">
 
 </body>
 </html>
@@ -19,32 +20,51 @@
 
 <script>
   const URI_UPLOAD_KEY = 'http://localhost:8080/upload/key'
-  const UPLOAD_KEY = 'uploadKey';
+  const URI_GET_STOCK_INFO = "http://localhost:8080/company/list";
+  const UPLOAD_KEY_API = 'uploadKey';
+  const GET_STOCK_INFO_API = "getStockInfo";
   const SUCCESS = 2000;
 
-  let post = (action) => {
-    if (action === UPLOAD_KEY){
-        postUploadApi();
-    }
+  let post = action => {
+      if (action === UPLOAD_KEY_API){
+          postUploadApi();
+      }
+  };
+
+  let get = action => {
+      if (action === GET_STOCK_INFO_API){
+          getStockInfo();
+      }
+  };
+
+  let getStockInfo = () => {
+      axios.get(URI_GET_STOCK_INFO)
+      .then(function (response) {
+          if (isSuccess(response)){
+              alert("조회완료");
+              console.log(response);
+          }
+      }).catch(function (error) {
+          alert('조회실패');
+          console.log(error);
+      })
   }
 
   let postUploadApi = () => {
     let key = $('#upload_key').val();
       axios.post(URI_UPLOAD_KEY, {
           key: key
-      })
-          .then(function (response) {
-              if (isSuccess(response)){
-                  alert('등록 완료');
-              }else{
-                  alert('등록 실패')
-              }
-              console.log(response);
-          })
-          .catch(function (error) {
-              alert('등록 실패');
-              console.log(error);
-          });
+      }).then(function (response) {
+          if (isSuccess(response)){
+              alert('등록 완료');
+          }else{
+              alert('등록 실패')
+          }
+          console.log(response);
+      }).catch(function (error) {
+          alert('등록 실패');
+          console.log(error);
+      });
   }
 
   let isSuccess = response => {

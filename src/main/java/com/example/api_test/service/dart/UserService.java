@@ -13,4 +13,8 @@ public class UserService {
     public void saveDartKey(String key, HttpServletRequest request){
         request.getSession().setAttribute("key", key);
     }
+
+    public String getUserKey(HttpServletRequest request){
+        return String.valueOf(request.getSession().getAttribute("key"));
+    }
 }

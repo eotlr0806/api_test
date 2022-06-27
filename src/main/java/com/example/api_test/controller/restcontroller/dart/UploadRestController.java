@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class UploadRestController {
 
-    @Autowired
-    UserService userService;
+    final private UserService userService;
+    public UploadRestController(UserService userService){
+        this.userService = userService;
+    }
 
     @PostMapping("/upload/key")
     public Response uploadKey(@RequestBody User user,
