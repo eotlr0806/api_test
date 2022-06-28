@@ -1,4 +1,4 @@
-package com.example.api_test.dto.dart;
+package com.example.api_test.dto.code;
 
 
 import lombok.AllArgsConstructor;

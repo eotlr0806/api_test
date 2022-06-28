@@ -7,6 +7,7 @@ import com.example.api_test.service.dart.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,14 +30,11 @@ public class CompanyRestController {
     public Response getCompany(@RequestParam String company_code,
                                HttpServletRequest request){
         String userKey = userService.getUserKey(request);
-        if(ObjectUtils.isEmpty(userKey)){
+        if(!StringUtils.hasText(userKey)){
             log.error("[CompanyRestController][getCompany] Session is null");
             return new Response(ResponseCode.NO_SESSION);
         }
-        companyService.getCompanyApi(userKey, company_code);
-
-
-        return new Response(ResponseCode.FAIL);
+        return companyService.getCompanyApi(userKey, company_code);
     }
 
 }

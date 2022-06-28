@@ -1,6 +1,7 @@
 package com.example.api_test.service.dart;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,6 +16,10 @@ public class UserService {
     }
 
     public String getUserKey(HttpServletRequest request){
-        return String.valueOf(request.getSession().getAttribute("key"));
+        Object key = request.getSession().getAttribute("key");
+        if(ObjectUtils.isEmpty(key)){
+            return null;
+        }
+        return String.valueOf(key);
     }
 }

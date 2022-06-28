@@ -2,11 +2,10 @@ package com.example.api_test.service.dart;
 
 import com.example.api_test.dto.common.Response;
 import com.example.api_test.dto.common.ResponseCode;
-import com.example.api_test.dto.dart.Uri;
-import lombok.extern.java.Log;
+import com.example.api_test.dto.code.Uri;
+import com.example.api_test.dto.dart.Company;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
@@ -27,13 +26,14 @@ public class CompanyService {
             return new Response(ResponseCode.FAIL);
         }
 
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(
+        ResponseEntity<Company> responseEntity = restTemplate.exchange(
                 uri,
-                String.class
+                HttpMethod.GET,
+                getEntity(),
+                Company.class
         );
         log.info("[CompanyService][getCompanyApi] response: {}", responseEntity.getBody());
-
-        return new Response(ResponseCode.FAIL);
+        return new Response(ResponseCode.SUCCESS, responseEntity.getBody());
     }
 
     private String getCompanyUri(String userKey, String companyCode){
@@ -41,6 +41,12 @@ public class CompanyService {
             return Uri.COMPANY.getUri() + "?crtfc_key=" + userKey + "&corp_code=" + companyCode;
         }
         return null;
+    }
+
+    private HttpEntity getEntity(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new HttpEntity(headers);
     }
 
 }
