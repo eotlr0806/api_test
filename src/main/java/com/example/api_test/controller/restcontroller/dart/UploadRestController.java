@@ -4,7 +4,6 @@ import com.example.api_test.dto.common.Response;
 import com.example.api_test.dto.common.ResponseCode;
 import com.example.api_test.dto.dart.User;
 import com.example.api_test.service.dart.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,9 +26,9 @@ public class UploadRestController {
 
         if(!ObjectUtils.isEmpty(user) && StringUtils.hasText(user.getKey())){
             userService.saveDartKey(user.getKey(), request);
-            return new Response(ResponseCode.SUCCESS);
+            return Response.create(ResponseCode.SUCCESS);
         }else{
-            return new Response(ResponseCode.FAIL);
+            return Response.create(ResponseCode.FAIL);
         }
     }
 }

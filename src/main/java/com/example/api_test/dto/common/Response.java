@@ -1,8 +1,5 @@
 package com.example.api_test.dto.common;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,16 +11,23 @@ public class Response<T> {
     private String msg;
     private T data;
 
+    public static Response<ResponseCode> create(ResponseCode responseCode){
+        return new Response<>(responseCode);
+    }
+    public static <T> Response<T> create(ResponseCode responseCode, T data){
+        return new Response<>(responseCode, data);
+    }
+
+    // static 메서드에서 쓰기 쉽게 하기위해 만든 private 생성자
     private Response(){}
-    public Response(ResponseCode responseCode, T data){
+    private Response(ResponseCode responseCode, T data){
         this.code = responseCode.getCode();
         this.msg  = responseCode.getMsg();
         this.data = data;
     }
-    public Response(ResponseCode responseCode){
+    private Response(ResponseCode responseCode){
         this.code = responseCode.getCode();
         this.msg  = responseCode.getMsg();
     }
-
 
 }

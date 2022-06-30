@@ -23,7 +23,7 @@ public class CompanyService {
 
         String uri = getCompanyUri(userKey, companyCode);
         if(!StringUtils.hasText(uri)){
-            return new Response(ResponseCode.FAIL);
+            return Response.create(ResponseCode.FAIL);
         }
 
         ResponseEntity<Company> responseEntity = restTemplate.exchange(
@@ -33,7 +33,7 @@ public class CompanyService {
                 Company.class
         );
         log.info("[CompanyService][getCompanyApi] response: {}", responseEntity.getBody());
-        return new Response(ResponseCode.SUCCESS, responseEntity.getBody());
+        return Response.create(ResponseCode.SUCCESS, responseEntity.getBody());
     }
 
     private String getCompanyUri(String userKey, String companyCode){
